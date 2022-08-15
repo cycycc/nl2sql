@@ -14,4 +14,4 @@ If there is no table name provided, we use the dataset ID.
 
 The set of unique original tables (with rows) are available in `data/all_tables.jsonl` with no other processing.
 
-The Spider data is formatted similarly to the WikiSQL data, with the major exception that examples in Spider contain multiple tables (a database). We format the tables using `</t>` as a delimiter. Also, there is no test set in Spider, as users are expected to submit to the test server to evaluate on the test split.
+The Spider data is formatted similarly to the WikiSQL data, with the major exception that examples in Spider contain multiple tables (a database). We format the tables using `</t>` as a delimiter. Also, there is no test set in Spider, as users are expected to submit to the test server to evaluate on the test split. The table schema are available in `data/spider/tables.json` (copied from the original data release) and the full tables need to be downloaded from the original release [here](https://yale-lily.github.io/spider).
