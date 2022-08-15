@@ -1,0 +1,17 @@
+gen:
+  api_key: <add your key credentials here>
+  # prompt needs to be in double quotes to render correctly
+  prompt: "table_10007452_3 <c> Order Year <t> text <c> Manufacturer <t> text <c> Model <t> text <c> Fleet Series (Quantity) <t> text <c> Powertrain (Engine/Transmission) <t> text <c> Fuel Propulsion <t> text <i>"
+  model_id: e02a2561-d31b-495a-926c-6093941a7778-ft
+  max_tokens: 50
+  temperature: 0.7
+  k: 0
+  p: 0.75
+  frequency_penalty: 0
+  presence_penalty: 0
+  stop_sequences: [</s>]
+  return_likelihoods: NONE
+  separator: --SEPARATOR--
+bq:
+  credentials: place_holder
+  test_sql: 'SELECT body FROM `valued-sight-253418.data.reddit` WHERE subreddit = "worldnews" and ups > 300 LIMIT 5'
