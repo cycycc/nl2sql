@@ -53,9 +53,13 @@ class BigQuery:
         rows = query_job.result()  # Waits for query to finish
         return rows
 
+class BigQueryStub:
+    def run_query(self, sql):
+        return [['STUB RESULT']]
+
 # initialize the two classes
 sql_generator = NL2SQL()
-sql_runner = BigQuery()
+sql_runner = BigQueryStub()
 
 # add a super cool title - hatching ckick always kills it
 st.title('Natural Language 2 SQL :hatching_chick:')
@@ -72,48 +76,45 @@ nl_query = ' ' + nl_query.strip() + ' <s>'
 final_nl_prompt =  prompt + nl_query
 
 generate_sql_button = st.button('Generate SQL!')
-
-# run_query_button = st.button('Run BigQery with SQL')
-
 generate_container = st.container()
 if generate_sql_button:
+    st.session_state.sql = ''
+    st.session_state.rows = ''
     with generate_container:
         # if the user hits the generate button then we do these things
 
         # send natural language query to cohere
-        generate_container.markdown('### Sending your query to Cohere to generate SQL... ###')
+        # generate_container.markdown('### Sending your query to Cohere to generate SQL... ###')
         generate_container.markdown(final_nl_prompt)
-        
+
         # call the generate endpoint
-        sql = sql_generator.generate(final_nl_prompt)
-        generate_container.markdown('## SQL has been generated :exploding_head: ##')
-        
+        with st.spinner(text='Generating SQL with Cohere :exploding_head:'):
+            sql = sql_generator.generate(final_nl_prompt)
+        # generate_container.markdown('## SQL has been generated :exploding_head: ##')
+
         # TODO: validate the sql
         table_name = prompt.split("<c>")[0].strip()
         sql = sql.replace(table_name, "`nl2sql." + table_name + "`")
-        generate_container.markdown(sql)
+        st.session_state.sql = sql
 
-        # run the query
-        rows = sql_runner.run_query(sql)
-        
-        generate_container.markdown('## The Results!!! ##')
-        # render the results to the user
-        for row in rows:
-            generate_container.markdown(row[0])
+if 'sql' in st.session_state:
+    generate_container.markdown(st.session_state.sql)
 
-# query_container = st.container()
-# # not sure we need two buttons but added for the fun of it
-# if run_query_button:
-#     with query_container:
-    
-#         # send cohere sql to BigQuery
-#         query_container.markdown('### Sending SQL query to BigQuery :rocket: ###')
-        
-#         # for testing
-#         # test_sql = bq_config['test_sql']
-        
-#         rows = sql_runner.run_query(test_sql)
-        
-#         # render the results to the user
-#         for row in rows:
-#             query_container.markdown(row[0])
+run_query_button = st.button('Run BigQuery with SQL')
+query_container = st.container()
+# not sure we need two buttons but added for the fun of it
+if run_query_button:
+    with query_container:
+        # send cohere sql to BigQuery
+        # query_container.markdown('### Sending SQL query to BigQuery :rocket: ###')
+
+        # for testing
+        # test_sql = bq_config['test_sql']
+
+        with st.spinner(text='Sending SQL to BigQuery :rocket:'):
+            st.session_state.rows = sql_runner.run_query(st.session_state.sql)
+
+if 'rows' in st.session_state:
+    # render the results to the user
+    for row in st.session_state.rows:
+        query_container.markdown(row[0])
