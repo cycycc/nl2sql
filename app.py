@@ -40,7 +40,7 @@ class NL2SQL:
             stop_sequences = self.stop_seq,
             return_likelihoods = self.return_liki)
         return self.clean_response(response)
-    
+
     def clean_response(self, response):
         # might keep this around to do some post processing...
         return response.generations[0].text
@@ -48,7 +48,7 @@ class NL2SQL:
 class BigQuery:
     def __init__(self):
         self.client = bigquery.Client()
-    
+
     def run_query(self, sql):
         query_job = self.client.query(sql)  # API request
         rows = query_job.result()  # Waits for query to finish
@@ -73,13 +73,13 @@ run_query_button = st.button('Run BigQery with SQL')
 
 # if the user hits the generate button then we do these things
 if generate_sql_button:
-    
+
     # send natural language query to cohere
     sql_gen_state = st.text('## Sending your query to Cohere to generate SQL... ###')
     # call the generate endpoint
     sql = sql_generator.generate(nl_query)
     sql_gen_state.markdown('## SQL has been generated :exploding_head: ##')
-    
+
     # TODO: validate the sql
     # sql_formatted = format_sql(sql)
 
@@ -89,12 +89,12 @@ if generate_sql_button:
 if run_query_button:
     # send cohere sql to BigQuery
     query_state = st.markdown('### Sending SQL query to BigQuery :rocket: ###')
-    
+
     # for testing
     test_sql = bq_config['test_sql']
-    
+
     rows = sql_runner.run_query(test_sql)
-    
+
     # render the results to the user
     for row in rows:
         st.markdown(row[0])
