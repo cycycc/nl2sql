@@ -59,7 +59,7 @@ class BigQueryStub:
 
 # initialize the two classes
 sql_generator = NL2SQL()
-sql_runner = BigQueryStub()
+sql_runner = BigQuery()
 
 # add a super cool title - hatching ckick always kills it
 st.title('Natural Language 2 SQL :hatching_chick:')
