@@ -1,5 +1,5 @@
 gen:
-  api_key: <add your key credentials here>
+  api_key: vPDgaw8Pr6HpmEuS25ahRAhHJZgBcWWNGrWuy9GK
   # prompt needs to be in double quotes to render correctly
   prompt: "table_10007452_3 <c> Order Year <t> text <c> Manufacturer <t> text <c> Model <t> text <c> Fleet Series (Quantity) <t> text <c> Powertrain (Engine/Transmission) <t> text <c> Fuel Propulsion <t> text <i>"
   model_id: e02a2561-d31b-495a-926c-6093941a7778-ft
