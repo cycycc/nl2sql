@@ -1,0 +1,4 @@
+pyyaml
+cohere
+streamlit
+google-cloud-bigquery
